@@ -1,5 +1,9 @@
+import { useState } from "react";
+
 // 文字实验室的"输入区"卡片。单独拆成一块，页面读起来更清爽。
 export default function InputCard() {
+    const [text, setText] = useState("今天的风很轻，适合把脑海里的想法慢慢写下来。");
+
   return (
     <article className="panel panel-half lab-panel card">
       <div className="panel-heading">
@@ -12,8 +16,10 @@ export default function InputCard() {
           id="text-input"
           rows="8"
           placeholder="例如：生活没有标准答案，但每一天都值得认真感受。"
-          defaultValue="今天的风很轻，适合把脑海里的想法慢慢写下来。"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
         />
+          <p className="lab-count">已输入 {text.length} 字</p>
         {/* "开始分析"驱动结果，是 4.4「数据驱动界面」的活儿，这里先按兵不动 */}
         <button className="primary-button" type="button">开始分析</button>
       </form>
