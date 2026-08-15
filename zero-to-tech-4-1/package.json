@@ -1,22 +1,16 @@
 {
-  "name": "zero-to-tech-4-1",
-  "version": "1.0.0",
-  "description": "> 这是 **零到全栈 · 模块 4.1：现代前端第一步——模块化** 的配套代码——\r > 网站**模块化改造之前**的起点版本。",
-  "main": "index.js",
+  "name": "zero-to-tech-4-5",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node_modules/.bin/vite",
-    "build": "node_modules/.bin/vite build",
-    "preview": "node_modules/.bin/vite preview"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "vite": "^8.2.1"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "animejs": "^4.5.0",
-    "react-dom": "^19.2.8"
+    "animejs": "^4.4.1",
+    "next": "^15.0.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   }
 }
