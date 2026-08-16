@@ -6,3 +6,4 @@ node_modules
 dist
 zero-to-tech-demos
 out
+.venv
