@@ -1,5 +1,16 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from fastapi import fastapi
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+)
+
 
 profile = {
     "heroTitle": "关于我",
