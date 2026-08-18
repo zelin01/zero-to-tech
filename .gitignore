@@ -7,3 +7,4 @@ dist
 zero-to-tech-demos
 out
 .venv
+.env*

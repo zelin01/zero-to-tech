@@ -1,14 +1,34 @@
+"use client"
 // 个人主页。结构、文案和 4.4 的 HomePage 一模一样（只是改了名 HomePage → HomeView）。
 // 内容照旧从 site.js 的 home 里读——"数据与界面分离"原样保留，site.js 一字未改。
 // 它本身纯展示、不带交互，是个"服务端组件"，顶上不用写 "use client"。
 // 唯一的变化：4.4 那个"打开作品"靠 onNavigate 回调跳页，这里换成 Next 的 <Link>。
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Nav from "./Nav.jsx";
 import PageHeading from "./PageHeading.jsx";
 import AnimatedCardGrid from "./AnimatedCardGrid.jsx";
 import { home } from "../data/site.js";
 
+
 export default function HomeView() {
+    const [data, setData] = useState(home);
+    useEffect(() => {
+        async function loadProfile(){
+        try {
+            const res = await fetch("http://localhost:8000/profile");
+            if (!res.ok) {
+                throw new Error(res.statusText);
+            }
+            setDate(await res.json());
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    loadProfile();
+    }, []);
+
   return (
     <AnimatedCardGrid className="dashboard-grid">
       <article className="hero-stage panel-full">

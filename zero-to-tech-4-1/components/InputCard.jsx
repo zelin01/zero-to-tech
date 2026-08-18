@@ -5,8 +5,30 @@
 // 因为用了 useState，要在浏览器里跑，所以顶上标了 "use client"。
 import { useState } from "react";
 
-export default function InputCard() {
+export default function InputCard({ onResult}) {
   const [text, setText] = useState("今天的风很轻，适合把脑海里的想法慢慢写下来。");
+  const [error, setError] = useState("");
+
+  async function handleAnalyze() {
+    setError("");
+
+    try {
+      const res = await fetch("http://localhost:8000/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `分析失败：${res.status}`);
+      }
+
+      onResult(await res.json());
+    } catch (error) {
+      setError(error.message);
+    }
+  }
 
   return (
     <article className="panel panel-half lab-panel card">
@@ -25,8 +47,8 @@ export default function InputCard() {
         />
         {/* state 现身：text 一变，这行数字自动跟着变 */}
         <p className="lab-count">已输入 {text.length} 字</p>
-        {/* "开始分析"要真出结果，得等模块 5 接后端，这里先按兵不动 */}
-        <button className="primary-button" type="button">开始分析</button>
+        {error && <p className="lab-error">{error}</p>}
+        <button className="primary-button" type="button" onClick={handleAnalyze}>开始分析</button>
       </form>
     </article>
   );

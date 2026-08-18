@@ -54,6 +54,11 @@
   letter-spacing: -0.12px;
 }
 
+.lab-error {
+  color: #b42318;
+  font-size: 13px;
+  line-height: 1.3;
+}
 .primary-button {
   justify-self: start;
   min-width: 128px;

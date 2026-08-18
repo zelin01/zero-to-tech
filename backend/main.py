@@ -1,33 +1,38 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
-import json
-from fastapi import fastapi
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
 from pydantic import BaseModel
+from pypinyin import lazy_pinyin, Style
+from snownlp import SnowNLP
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],
+    allow_methods=["*"]
 )
 
+class AnalyzeRequest(BaseModel):
+    text: str
 
-profile = {
-    "heroTitle": "关于我",
-    "heroSubtitle": "项目，创意，灵感，心得，我的作品",
-}
+def text_label(score):
+    if score >= 0.6:
+        return "偏积极"
+    elif score <= 0.4:
+        return "偏消极"
+    return "中性"
 
-class Handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        if self.path == "/api/profile":
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.end_headers()
-            body = json.dumps(profile, ensure_ascii=False)  # ensure_ascii=False：让中文原样输出
-            self.wfile.write(body.encode("utf-8"))
-        else:
-            self.send_response(404)
-            self.end_headers()
+@app.get("/api/profile")
+def get_profile():
+    return
 
-print("后端已启动：http://localhost:8000/api/profile")
-HTTPServer(("", 8000), Handler).serve_forever()
+@app.post("/api/analyze")
+def analyze(req: AnalyzeRequest):
+    text = req.text
+    score = round(SnowNLP(text).sentiments, 2)
+    return {
+        "text": text,
+        "score": score,
+        "label": text_label(score),
+        "pinyin": "".join(lazy_pinyin(text, style=Style.TONE)),
+    }
