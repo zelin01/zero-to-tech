@@ -3,6 +3,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from pypinyin import lazy_pinyin, Style
 from snownlp import SnowNLP
+import json
+from datetime import datetime, timezone
 
 app = FastAPI()
 
@@ -22,6 +24,19 @@ def text_label(score):
         return "偏消极"
     return "中性"
 
+def load_history():
+    try:
+        with open("./history/history.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+def save_history(history):
+    records = load_history()
+    records.append(history)
+    with open("./history/history.json", "w", encoding="utf-8") as f:
+        json.dump(records, f, ensure_ascii=False, indent=2)
+
 @app.get("/api/profile")
 def get_profile():
     return
@@ -35,4 +50,13 @@ def analyze(req: AnalyzeRequest):
         "score": score,
         "label": text_label(score),
         "pinyin": "".join(lazy_pinyin(text, style=Style.TONE)),
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
+    save_record(result)
+    return result
+
+@app.get("/api/history")
+def history():
+    records = load_history()
+    records.reverse()
+    return records[:10]
