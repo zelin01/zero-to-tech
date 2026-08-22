@@ -5,6 +5,11 @@ from pypinyin import lazy_pinyin, Style
 from snownlp import SnowNLP
 import json
 from datetime import datetime, timezone
+import sqlite3
+
+conn = sqlite3.connect("test.db")
+cur = conn.cursor()
+
 
 app = FastAPI()
 
