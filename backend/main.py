@@ -19,6 +19,14 @@ app.add_middleware(
     allow_methods=["*"]
 )
 
+CREAT TABLE films (
+    id  INTEGER PRIMARY KEY AUTOINCREMENT,
+    title   TEXT,
+    language    TEXT,
+    release_date TEXT,
+    created_at   TEXT
+)
+
 class AnalyzeRequest(BaseModel):
     text: str
 
