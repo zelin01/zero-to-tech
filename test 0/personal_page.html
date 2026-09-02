@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal — 个人主页</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ====== 圆润极简风：浅色留白 · 黑白灰 · 低饱和强调 ====== */
+  :root{
+    --bg:#f7f7f5;
+    --card:#ffffff;
+    --text:#1b1b1b;
+    --muted:#8a8a84;
+    --line:#e6e6e2;
+    --accent:#6b7260;
+    --accent-soft:#eceee6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family: "Nunito", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Helvetica Neue", sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.85;
+    font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  .container{max-width:760px;margin:0 auto;padding:0 28px;}
+
+  /* 导航栏 */
+  nav{
+    position:sticky;top:0;
+    background:rgba(247,247,245,.92);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    z-index:100;
+  }
+  .nav-inner{
+    max-width:760px;margin:0 auto;
+    padding:16px 28px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .logo{
+    font-size:.95rem;letter-spacing:3px;
+    color:var(--text);font-weight:700;
+  }
+  .nav-links{display:flex;gap:30px;align-items:center;}
+  .nav-links a{
+    color:var(--muted);text-decoration:none;
+    font-size:.85rem;font-weight:600;
+    letter-spacing:1px;transition:color .2s;
+  }
+  .nav-links a:hover{color:var(--text);}
+
+  /* 汉堡菜单（仅移动端显示） */
+  .menu-toggle{
+    display:none;background:none;border:none;
+    cursor:pointer;padding:4px;
+  }
+  .menu-toggle span{
+    display:block;width:22px;height:2px;
+    background:var(--text);margin:5px 0;
+    border-radius:2px;transition:.3s;
+  }
+
+  /* Hero */
+  header{padding:140px 28px 100px;}
+  .eyebrow{
+    font-size:.8rem;letter-spacing:4px;
+    color:var(--muted);text-transform:uppercase;
+    margin-bottom:24px;font-weight:600;
+  }
+  header h1{
+    font-size:clamp(2rem, 5vw, 3rem);
+    font-weight:700;letter-spacing:1px;line-height:1.25;
+  }
+  header h1 em{color:var(--accent);font-style:normal;}
+  .intro{
+    margin-top:28px;max-width:520px;
+    color:var(--muted);font-size:1.05rem;
+  }
+  .meta{
+    display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;
+  }
+  .meta span{
+    font-size:.78rem;font-weight:600;letter-spacing:1.5px;
+    color:var(--text);
+    border:1px solid var(--line);
+    padding:10px 20px;border-radius:50px;
+  }
+
+  /* 通用区块 */
+  section{padding:90px 28px;border-top:1px solid var(--line);}
+  .section-label{
+    font-size:.78rem;letter-spacing:4px;
+    color:var(--muted);text-transform:uppercase;
+    margin-bottom:40px;font-weight:700;
+  }
+  .section-label b{color:var(--accent);font-weight:700;}
+
+  /* 关于 */
+  .about p{color:var(--muted);font-size:1.05rem;max-width:620px;}
+  .about p+p{margin-top:18px;}
+  .about strong{color:var(--text);font-weight:700;}
+
+  /* 经历时间线 */
+  .timeline{list-style:none;margin-top:8px;}
+  .timeline li{padding:28px 0;border-bottom:1px solid var(--line);}
+  .timeline li:last-child{border-bottom:none;}
+  .row{
+    display:flex;justify-content:space-between;
+    align-items:baseline;gap:20px;flex-wrap:wrap;
+  }
+  .row .title{font-weight:700;font-size:1.05rem;}
+  .row .date{
+    color:var(--muted);font-size:.78rem;
+    letter-spacing:2px;white-space:nowrap;font-weight:600;
+  }
+  .timeline .desc{color:var(--muted);font-size:.92rem;margin-top:8px;}
+
+  /* 作品 */
+  .works{list-style:none;}
+  .works li{border-bottom:1px solid var(--line);}
+  .works li:last-child{border-bottom:none;}
+  .works a{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:28px 6px;text-decoration:none;color:var(--text);
+    transition:.25s;border-radius:8px;
+  }
+  .works a:hover{
+    color:var(--accent);
+    padding-left:14px;
+    background:var(--accent-soft);
+  }
+  .works .pn{font-size:1.1rem;font-weight:700;}
+  .works .year{color:var(--muted);font-size:.8rem;font-weight:600;}
+
+  /* 联系 */
+  .contact{display:flex;gap:14px;flex-wrap:wrap;}
+  .contact a{
+    color:var(--text);text-decoration:none;font-size:.9rem;font-weight:600;
+    border:1px solid var(--line);padding:14px 28px;border-radius:50px;
+    transition:.25s;
+  }
+  .contact a:hover{
+    border-color:var(--accent);color:var(--accent);
+    background:var(--accent-soft);
+  }
+
+  footer{
+    padding:60px 28px;text-align:center;color:var(--muted);
+    font-size:.8rem;letter-spacing:2px;border-top:1px solid var(--line);
+    font-weight:600;
+  }
+
+  /* 淡入动画 */
+  .fade{opacity:0;transform:translateY(16px);transition:.8s ease;}
+  .fade.show{opacity:1;transform:none;}
+
+  /* ====== 响应式：平板 ====== */
+  @media (max-width: 768px){
+    header{padding:110px 24px 80px;}
+    section{padding:70px 24px;}
+    .nav-inner{padding:14px 24px;}
+  }
+
+  /* ====== 响应式：手机 ====== */
+  @media (max-width: 640px){
+    header{padding:90px 20px 60px;}
+    header h1{letter-spacing:0;}
+    .intro{font-size:1rem;}
+    .meta span{padding:8px 16px;font-size:.72rem;}
+
+    section{padding:60px 20px;}
+
+    .works a{padding:22px 4px;}
+    .works a:hover{padding-left:8px;}
+
+    .contact a{padding:12px 22px;font-size:.85rem;}
+
+    /* 移动端导航 */
+    .nav-links{
+      display:none;position:absolute;
+      top:100%;left:0;right:0;
+      background:rgba(247,247,245,.98);
+      backdrop-filter:blur(12px);
+      flex-direction:column;
+      padding:20px 28px;gap:18px;
+      border-bottom:1px solid var(--line);
+      box-shadow:0 10px 30px rgba(0,0,0,.04);
+    }
+    .nav-links.active{display:flex;}
+    .menu-toggle{display:block;}
+  }
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <span class="logo">你的名字</span>
+      <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')" aria-label="菜单">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="#about">关于</a>
+        <a href="#career">经历</a>
+        <a href="#works">作品</a>
+        <a href="#contact">联系</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <div class="container">
+      <p class="eyebrow">你好，我是</p>
+      <h1>你的名字<em>。</em><br>你的身份一句话</h1>
+      <p class="intro">用一两句真诚的话介绍你自己：你是谁、专注什么、为什么做现在这件事。克制一点，比形容词更有力量。</p>
+      <div class="meta">
+        <span>某地 · 某种角色</span>
+        <span>专注 XXX 领域</span>
+        <span>工作与生活</span>
+      </div>
+    </div>
+  </header>
+
+  <section id="about" class="fade">
+    <div class="container">
+      <div class="section-label"><b>01</b> · 关于我</div>
+      <div class="about">
+        <p>用两段话介绍过去与现在。<strong>第一句说核心身份</strong>，第二句展开你的经历、方向与态度。语气克制、内容具体，比空泛的形容词更有力量。</p>
+        <p>日常关注设计、技术与生活之间的一些小事，享受把复杂的问题拆解成简单方案的过程。长期主义，习惯沉默专注。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="career" class="fade">
+    <div class="container">
+      <div class="section-label"><b>02</b> · 经历</div>
+      <ul class="timeline">
+        <li>
+          <div class="row"><span class="title">公司 / 机构名称</span><span class="date">2021 — 现在</span></div>
+          <div class="desc">职位与一句话描述你在那里做的事。</div>
+        </li>
+        <li>
+          <div class="row"><span class="title">公司 / 机构名称</span><span class="date">2019 — 2021</span></div>
+          <div class="desc">职位与一句话描述，可以是前一份工作或教育经历。</div>
+        </li>
+        <li>
+          <div class="row"><span class="title">教育 / 其他</span><span class="date">2015 — 2019</span></div>
+          <div class="desc">学校与专业，一句话带过即可。</div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="works" class="fade">
+    <div class="container">
+      <div class="section-label"><b>03</b> · 作品</div>
+      <ul class="works">
+        <li><a href="#"><span class="pn">作品名称</span><span class="year">2024</span></a></li>
+        <li><a href="#"><span class="pn">作品名称</span><span class="year">2023</span></a></li>
+        <li><a href="#"><span class="pn">作品名称</span><span class="year">2022</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="contact" class="fade">
+    <div class="container">
+      <div class="section-label"><b>04</b> · 联系</div>
+      <div class="contact">
+        <a href="mailto:you@example.com">邮箱</a>
+        <a href="#">GitHub</a>
+        <a href="#">微信</a>
+        <a href="#">Blog</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>© <span id="year"></span> 你的名字</footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // 滚动淡入
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('show'); });
+    }, { threshold: .12 });
+    document.querySelectorAll('.fade').forEach(s => io.observe(s));
+
+    // 点击导航链接后自动关闭移动端菜单
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.remove('active');
+      });
+    });
+  </script>
+</body>
+</html>

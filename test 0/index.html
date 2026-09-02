@@ -2,7 +2,31 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的第一个网站</title>
+    <style>
+        :root{
+            --bg:#f7f7f5;
+            --card:#ffffff;
+            --text:#1b1b1b;
+            --muted:#8a8a84;
+            --line:#e6e6e2;
+            --accent:#6b7260;
+            --accent-soft:#eceee6;
+        }
+        *{margin: 0; padding: 0; box-sizing: border-box;}
+        html{scroll-behavior: smooth;}
+        body{
+            font-family: "Georgia", "Source Han Serif SC", "Noto Serif SC", "Songti SC";
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container{max_width:760px;margin:0auto;padding:0.28px}
+
+    </style>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
