@@ -5,3 +5,4 @@ out
 .venv
 .env*
 backend/*.db
+!.env.example
