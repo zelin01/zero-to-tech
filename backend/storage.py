@@ -22,7 +22,9 @@ def init_db():
         created_at TEXT
     )
     """)
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_history_created" "ON history(session_id ,created_at)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_history_session_created " 
+                "ON history(session_id ,created_at)"
+                )
     conn.commit()
     conn.close()
 
