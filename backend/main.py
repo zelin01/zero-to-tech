@@ -1,6 +1,7 @@
 # backend/main.py
 from math import factorial
-
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -13,11 +14,14 @@ from fastapi import Request, Response
 from storage import init_db, save_record, get_history  # ← 新增：跟存储层打交道，只经过这一行
 
 init_db()  # ← 新增：启动时初始化数据库
+
+load_dotenv()
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS").split(",")
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_methods=["GET", "POST"],
     allow_credentials=True,
 )
