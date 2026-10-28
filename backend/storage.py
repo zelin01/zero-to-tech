@@ -21,6 +21,7 @@ def init_db():
         created_at TEXT
     )
     """)
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_history_created ON history(created_at)")
     conn.commit()
     conn.close()
 
