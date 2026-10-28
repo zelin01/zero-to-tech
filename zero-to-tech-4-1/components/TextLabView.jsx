@@ -22,7 +22,7 @@ export default function TextLabView() {
   async function openHistory() {
     setHistoryOpen(true);
     try {
-      const res = await fetch(`${API}/api/history`);
+      const res = await fetch(`${API}/api/history`,{ credentials: "include"});
       setHistory(await res.json());
     } catch {
       // 后端没起来时不让页面崩掉，弹窗显示"还没有记录"
