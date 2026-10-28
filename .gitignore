@@ -8,3 +8,4 @@ zero-to-tech-demos
 out
 .venv
 .env*
+backend/*.db
