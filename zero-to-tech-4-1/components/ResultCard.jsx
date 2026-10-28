@@ -1,22 +1,21 @@
 "use client";
 
-// 结果区卡片。和 4.4 一字未改。
-// 一挂载就自己淡入、把情感分数滚动归位（anime.js 的入场动画）。
-// 因为用了 useEffect / useRef / anime.js，要在浏览器里跑，所以顶上标了 "use client"。
-// （拼音、情感分数都是写死的假数据，真分析等模块 5 接后端。）
+// 结果区卡片。这一节只加了一样东西：右上角的"历史记录"按钮。
+// 点它会让父组件把历史弹窗打开——这张卡自己不管历史长什么样。
 import { useEffect, useRef } from "react";
 import { animate, scrambleText } from "animejs";
 
-export default function ResultCard({ result}) {
+export default function ResultCard({ result, onOpenHistory }) {
   const cardRef = useRef(null);
   const scoreRef = useRef(null);
 
   const original = result
     ? result.text
-      : "今天的风很轻，适合把脑海里的想法慢慢写下来。";
+    : "今天的风很轻，适合把脑海里的想法慢慢写下来。";
   const pinyin = result ? result.pinyin : "jīn tiān de fēng hěn qīng …";
   const score = result ? result.score : 0.86;
   const label = result ? result.label : "偏积极";
+
   useEffect(() => {
     // 卡片自己淡入：.card 默认 opacity:0，这张卡负责把自己显出来
     animate(cardRef.current, {
@@ -34,9 +33,15 @@ export default function ResultCard({ result}) {
 
   return (
     <article ref={cardRef} className="panel panel-half lab-panel result-panel card">
-      <div className="panel-heading">
-        <p className="section-kicker">结果区</p>
-        <h3>分析结果</h3>
+      <div className="panel-heading panel-heading-row">
+        <div>
+          <p className="section-kicker">结果区</p>
+          <h3>分析结果</h3>
+        </div>
+        {/* 这一节新增：打开历史弹窗 */}
+        <button type="button" className="ghost-button" onClick={onOpenHistory}>
+          历史记录
+        </button>
       </div>
       <div className="result-stack">
         <div className="result-item">

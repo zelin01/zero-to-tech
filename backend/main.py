@@ -1,27 +1,22 @@
-from ipaddress import get_mixed_type_key
-
-from fastapi.middleware.cors import CORSMiddleware
+# backend/main.py
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pypinyin import lazy_pinyin, Style
 from snownlp import SnowNLP
-from storage import init_db, save_record, get_history
 from datetime import datetime, timezone
-import sqlite3
 
-conn = sqlite3.connect("test.db")
-cur = conn.cursor()
+from storage import init_db, save_record, get_history  # ← 新增：跟存储层打交道，只经过这一行
 
-
+init_db()  # ← 新增：启动时初始化数据库
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000"],
     allow_methods=["GET", "POST"],
 )
 
-init_db()
 
 profile = {
     "heroTitle": "关于我",
@@ -37,29 +32,31 @@ profile = {
         "learning": "零到全栈",
     },
 }
+
 class AnalyzeRequest(BaseModel):
     text: str
 
-def text_label(score):
+def score_label(score):
     if score >= 0.6:
         return "偏积极"
     elif score <= 0.4:
         return "偏消极"
-    return "中性"
+    else:
+        return "中性"
 
 @app.get("/api/profile")
 def get_profile():
-    return
+    return profile
 
 @app.post("/api/analyze")
 def analyze(req: AnalyzeRequest):
     text = req.text
     score = round(SnowNLP(text).sentiments, 2)
-    return {
+    result = {
         "text": text,
         "score": score,
-        "label": text_label(score),
-        "pinyin": "".join(lazy_pinyin(text, style=Style.TONE)),
+        "label": score_label(score),
+        "pinyin": " ".join(lazy_pinyin(text, style=Style.TONE)),
         "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
     save_record(result)
@@ -67,4 +64,4 @@ def analyze(req: AnalyzeRequest):
 
 @app.get("/api/history")
 def history():
-   return get_history(10)
+    return get_history(10)
