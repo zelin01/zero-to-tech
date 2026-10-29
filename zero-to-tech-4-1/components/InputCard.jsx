@@ -14,7 +14,7 @@ export default function InputCard({ onResult }) {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:8000/api/analyze", {
+      const res = await fetch("http:/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials:"include",

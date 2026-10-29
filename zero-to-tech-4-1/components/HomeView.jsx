@@ -18,7 +18,7 @@ export default function HomeView() {
   useEffect(() => {
     async function loadProfile() {
       try {
-        const res = await fetch("http://localhost:8000/api/profile");
+        const res = await fetch("http:/api/profile");
         if (!res.ok) {
           throw new Error(`主页数据加载失败：${res.status}`);
         }
